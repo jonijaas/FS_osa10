@@ -1,4 +1,6 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Pressable } from "react-native";
+import * as Linking from 'expo-linking';
+
 import RepositoryItemCounts from "./RepositoryItemCounts";
 import Text from "./Text";
 import theme from "../theme";
@@ -41,27 +43,47 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly'
+  },
+  pressableBox: {
+    backgroundColor: theme.colors.primary,
+    padding: 5,
+    borderRadius: 5,
+    marginTop: 10
+  },
+  pressableBoxText: {
+    color: theme.colors.appBarText,
+    alignSelf: 'center',
+    padding: 5,
   }
 })
 
 
-const RepositoryItem = ({ repository }) => {
+const RepositoryItem = ({ repository, single }) => {
+  const openGitHub = () => {
+    Linking.openURL(repository.url);
+  }
+  
   return (
-    <View style={styles.repositoryItemContainer}>
+    <View testID='repositoryItem' style={styles.repositoryItemContainer}>
       <View style={styles.upperContainer}>
         <Image style={styles.avatar} source={{uri: repository.ownerAvatarUrl}} />
         <View style={styles.textContainer}>
-          <Text fontWeight='bold'>{repository.fullName}</Text>
-          <Text color='textSecondary'>{repository.description}</Text>
-          <Text style={styles.languageBox}>{repository.language}</Text>
+          <Text testID='fullName' fontWeight='bold'>{repository.fullName}</Text>
+          <Text testID='description' color='textSecondary'>{repository.description}</Text>
+          <Text testID='language' style={styles.languageBox}>{repository.language}</Text>
         </View>
       </View>
       <View style={styles.countsContainer}>
-        <RepositoryItemCounts name='Stars' count={repository.stargazersCount} />
-        <RepositoryItemCounts name='Forks' count={repository.forksCount} />
-        <RepositoryItemCounts name='Reviews' count={repository.reviewCount} />
-        <RepositoryItemCounts name='Rating' count={repository.ratingAverage} />
+        <RepositoryItemCounts testID='stars' name='Stars' count={repository.stargazersCount} />
+        <RepositoryItemCounts testID='forks' name='Forks' count={repository.forksCount} />
+        <RepositoryItemCounts testID='reviews' name='Reviews' count={repository.reviewCount} />
+        <RepositoryItemCounts testID='ratings' name='Rating' count={repository.ratingAverage} />
       </View>
+      {single && 
+      <Pressable style={styles.pressableBox} onPress={openGitHub} >
+        <Text style={styles.pressableBoxText} fontWeight='bold'>Open in GitHub</Text>
+      </Pressable>
+      }
     </View>
   )
 }

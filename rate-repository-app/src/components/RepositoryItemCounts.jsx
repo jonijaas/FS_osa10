@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryItemCounts = ({ name, count }) => {
+const RepositoryItemCounts = ({ name, count, testID }) => {
   const formatCount = ( value ) => {
     if (value >= 1000) {
       return (Math.round(value / 100) / 10) + 'k';
@@ -19,7 +19,7 @@ const RepositoryItemCounts = ({ name, count }) => {
   
   return (
     <View style={styles.countContainer}>
-      <Text fontWeight='bold'>{formatCount(count)}</Text>
+      <Text testID={testID} fontWeight='bold'>{formatCount(count)}</Text>
       <Text color='textSecondary'>{name}</Text>
     </View>
   )
