@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   appBarText: {
     color: theme.colors.appBarText,
     fontWeight: theme.fontWeights.bold,
-    margin: 5
+    margin: 10
   }
 })
 

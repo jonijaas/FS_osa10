@@ -1,11 +1,10 @@
 import { useParams } from 'react-router-native';
-import { useQuery } from '@apollo/client'
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import RepositoryItem from './RepositoryItem';
-import { GET_SINGLE_REPOSITORY } from '../graphql/queries';
-import Text from './Text';
+import useSingleRepository from '../hooks/useSingleRepository';
 import ReviewItem from './ReviewItem'
+import Text from './Text';
 
 const styles = StyleSheet.create({
   separator: {
@@ -17,20 +16,22 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { loading, error, data } = useQuery(GET_SINGLE_REPOSITORY, { variables: { id } });
+  
+  const { repository, fetchMore, loading } = useSingleRepository({
+    id,
+    first: 5
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   if (loading) {
-    return (<Text>Repository loading...</Text>);
-  }
-  if (error) {
-    console.log(error);
-    throw new Error(error.message);
+    return <Text>Loading...</Text>;
   }
 
-  const repository = data.repository;
-
-  const reviews = data.repository
-    ? data.repository.reviews.edges.map((r) => r.node)
+  const reviews = repository
+    ? repository.reviews.edges.map((r) => r.node)
     : [];
 
   return (
@@ -39,7 +40,9 @@ const SingleRepository = () => {
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => (
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
+      ListHeaderComponent={(
         <>
           <RepositoryItem repository={repository} single='true' />
           <ItemSeparator />

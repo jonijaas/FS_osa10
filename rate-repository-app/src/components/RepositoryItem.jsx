@@ -62,7 +62,6 @@ const RepositoryItem = ({ repository, single }) => {
   const openGitHub = () => {
     Linking.openURL(repository.url);
   }
-  
   return (
     <View testID='repositoryItem' style={styles.repositoryItemContainer}>
       <View style={styles.upperContainer}>
