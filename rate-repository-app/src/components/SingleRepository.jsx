@@ -38,7 +38,7 @@ const SingleRepository = () => {
     <FlatList
       data={reviews}
       ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => <ReviewItem review={item} myReviews={false} />}
       keyExtractor={({ id }) => id}
       onEndReached={onEndReach}
       onEndReachedThreshold={0.5}

@@ -1,11 +1,12 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import Constants from 'expo-constants';
-import { useQuery, useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 
 import theme from "../theme";
 import AppBarTab from "./AppBarTab";
-import { ME } from '../graphql/queries';
+import useCurUser from '../hooks/useCurUser';
 import useAuthStorage from "../hooks/useAuthStorage";
+import Text from "./Text";
 
 const styles = StyleSheet.create({
   container: {
@@ -22,14 +23,10 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
-  const { data, error, loading } = useQuery(ME, { fetchPolicy: 'cache-and-network' });
+  const { currentUser, loading } = useCurUser({ includeReviews: false });
 
   if (loading) {
-    return null;
-  }
-  if (error) {
-    console.log(error);
-    throw new Error(error.message);
+    return <Text>Loading user...</Text>;
   }
 
   const signOut = async () => {
@@ -41,10 +38,11 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollView} horizontal>
         <AppBarTab text='Repositories' link='/' />
-        {data.me
+        {currentUser
           ? (
             <>
               <AppBarTab text='Create a review' link='/createreview' />
+              <AppBarTab text='My reviews' link='/myreviews' />
               <AppBarTab text='Sign out' link='/signin' onClick={() => signOut()} />
             </>
           )

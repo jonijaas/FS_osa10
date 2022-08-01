@@ -1,62 +1,20 @@
 import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { useNavigate } from 'react-router-native';
-import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
-import { Searchbar } from 'react-native-paper';
 import { useDebounce } from 'use-debounce';
 
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
-import theme from '../theme';
+import Filter from './Filter';
+import SortPicker from './SortPicker';
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
-  },
-  sortPicker: {
-    height: 60,
-    margin: 20,
-    marginTop: 0,
-    fontSize: theme.fontSizes.subheading,
-    backgroundColor: theme.colors.mainBackground,
-    borderWidth: 0
-  },
-  searchBar: {
-    margin: 20
   }
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
-
-const SortPicker = ({ selectedSort, setSelectedSort }) => {
-  return (
-    <Picker
-      selectedValue={selectedSort}
-      style={styles.sortPicker}
-      onValueChange={(itemValue) => 
-        setSelectedSort(itemValue)
-      }
-      prompt={'Select an item...'}
-    >
-      <Picker.Item label='Latest repositories' value='latest' />
-      <Picker.Item label='Highest rated repositories' value='highRated' />
-      <Picker.Item label='Lowest rated repositories' value='lowRated' />
-    </Picker>
-  )
-}
-
-const Filter = ({ searchQuery, setSearchQuery }) => {
-  const onChangeSearch = query => setSearchQuery(query);
-  
-  return (
-    <Searchbar
-      placeholder='Search...'
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-      style={styles.searchBar}
-    />
-  )
-}
 
 export const RepositoryListContainer = ({ repositories, onEndReach, onPress , selectedSort, setSelectedSort, searchQuery, setSearchQuery }) => {
   const repositoryNodes = repositories
