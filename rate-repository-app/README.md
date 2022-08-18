@@ -10,4 +10,4 @@ Run the tests with `npm run test`
 
 Run the ESLint check with `npm run lint`
 
-Requires `APOLLO_URI` variable
+Requires `APOLLO_URI` variable, for example in .env file.
