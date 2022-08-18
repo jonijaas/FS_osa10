@@ -2,4 +2,4 @@
 https://fullstackopen.com/en/part10
 
 ## Exercises
-<rate-repository-app: 10.1-10.27
+rate-repository-app: 10.1-10.27
