@@ -1,4 +1,4 @@
-# Full Stack Open part10 - React Native
+# Full Stack Open Part 10 - React Native
 https://fullstackopen.com/en/part10
 
 ## Exercises
